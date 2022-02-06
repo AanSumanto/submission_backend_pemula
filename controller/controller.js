@@ -158,7 +158,7 @@ export const editBookById = (req, h) => {
     if (name === undefined) {
       const res = h.response({
         status: "Fail",
-        message: "Gagal memperbaharui buku. Mohon nama buku diisi",
+        message: "Gagal memperbaharui buku. Nama buku tidak boleh kosong",
       });
       res.code(400);
 
