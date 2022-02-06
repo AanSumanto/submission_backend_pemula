@@ -22,10 +22,6 @@ export const routes = [
     path: "/books/{id}",
     handler: getBookById,
   },
-  // {
-  //   method: "GET",
-  //   path: "/books/reading={reading?}",
-  // },
   {
     method: "PUT",
     path: "/books/{id}",
