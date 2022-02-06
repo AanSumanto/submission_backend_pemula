@@ -60,7 +60,7 @@ export const addBook = (req, h) => {
   if (isSuccess) {
     const res = h.response({
       status: "success",
-      message: "Buku berhasil ditambahkan",
+      message: `Buku ${name} berhasil ditambahkan`,
       data: { bookId: id },
     });
     res.code(201);
@@ -84,7 +84,7 @@ export const getAllBooks = (req, h) => {
 
   if (name !== undefined) {
     filteredBooks = filteredBooks.filter((book) =>
-      book.name.toLoweCase().includes(name.toLoweCase())
+      book.name.toLowerCase().includes(name.toLowerCase())
     );
   }
 
@@ -130,7 +130,7 @@ export const getBookById = (req, h) => {
 
   const res = h.response({
     status: "Fail",
-    message: "Buku tidak ditemukan",
+    message: `Buku dengan id ${id} tidak ditemukan`,
   });
 
   res.code(401);
@@ -151,8 +151,11 @@ export const editBookById = (req, h) => {
     reading,
   } = req.payload;
 
+  const updatedAt = new Date().toISOString();
+  const index = books.findIndex((book) => book.id === id);
+
   if (index !== -1) {
-    if (bookName === undefined) {
+    if (name === undefined) {
       const res = h.response({
         status: "Fail",
         message: "Gagal memperbaharui buku. Mohon nama buku diisi",
@@ -165,7 +168,7 @@ export const editBookById = (req, h) => {
     if (pageCount < readPage) {
       const res = h.response({
         status:
-          "Gagal memperbaharui buku. halaman baca tidak boleh lebih dari total halaman",
+          "Gagal memperbaharui buku. readPage tidak boleh lebih besar dari pageCount",
       });
       res.code(400);
 
@@ -192,14 +195,14 @@ export const editBookById = (req, h) => {
       status: "success",
       message: "Buku berhasil diperbaharui",
     });
-    response.code(200);
+    res.code(200);
 
     return res;
   }
 
-  const response = h.response({
+  const res = h.response({
     status: "Fail",
-    message: "Gagal memperbaharui buku. Id tidak ditemukan",
+    message: `Gagal memperbaharui buku. Buku dengan id ${id} tidak ditemukan`,
   });
   res.code(404);
 
@@ -215,7 +218,7 @@ export const deleteBookById = (req, h) => {
     books.splice(index, 1);
     const res = h.response({
       status: "success",
-      message: "Buku berhasil di hapus",
+      message: `Buku dengan id ${id} berhasil di hapus`,
     });
     res.code(200);
 
@@ -224,9 +227,9 @@ export const deleteBookById = (req, h) => {
 
   const res = h.response({
     status: "Fail",
-    message: "Buku gagal dihapus, Id tidak ditemukan",
+    message: `Buku gagal dihapus,buku dengan id ${id} tidak ditemukan`,
   });
   res.code(404);
 
-  return response;
+  return res;
 };
